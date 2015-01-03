@@ -23,12 +23,13 @@ local function loadEditorConfig(path)
 	return config
 end
 
-local function setBufferProperties(config, path, filename)
+local function setBufferProperties(config, filename)
+	if filename == nil then return end
 	for sectionName, section in pairs(config) do
 		if #sectionName == 0 then goto continue end
 		local pattern = string.gsub(sectionName, "%*?%*?%??", patternSubs)
 		pattern = string.gsub(pattern, "%[%!", "[^")
-		local withoutPath = string.sub(filename, #path, #filename)
+		local withoutPath = filename:match("[^/\\]+$")
 		if string.match(withoutPath, pattern) == nil then goto continue end
 		if section["indent_style"] ~= nil then
 			if section["indent_style"] == "tab" then
@@ -69,7 +70,7 @@ events.connect(events.FILE_OPENED, function(filename)
 	local path = filename
 	local configs = {}
     while true do
-        path, current = string.match(path, "^(.+/)(.+)")
+        path, current = string.match(path, "^(.+[/\\])(.+)")
         if path == nil then break end
 		local possiblePath = path .. ".editorconfig"
         local attributes = lfs.attributes(possiblePath)
@@ -78,7 +79,7 @@ events.connect(events.FILE_OPENED, function(filename)
 			if configs[#configs][""]["root"] then break end
 		end
     end
-	for i = #configs, 1, -1 do
-		setBufferProperties(configs[i], path, filename)
+	for i = 1, #configs do
+		setBufferProperties(configs[#configs - i + 1], filename)
 	end
 end)
