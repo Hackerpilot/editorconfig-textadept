@@ -69,16 +69,16 @@ events.connect(events.FILE_OPENED, function(filename)
 	if filename == nil then return end
 	local path = filename
 	local configs = {}
-    while true do
-        path, current = string.match(path, "^(.+[/\\])(.+)")
-        if path == nil then break end
+	while true do
+		path, current = string.match(path, "^(.+[/\\])(.+)")
+		if path == nil then break end
 		local possiblePath = path .. ".editorconfig"
-        local attributes = lfs.attributes(possiblePath)
+		local attributes = lfs.attributes(possiblePath)
 		if attributes ~= nil then
 			configs[#configs + 1] = loadEditorConfig(possiblePath)
 			if configs[#configs][""]["root"] then break end
 		end
-    end
+	end
 	for i = 1, #configs do
 		setBufferProperties(configs[#configs - i + 1], filename)
 	end
