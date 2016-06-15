@@ -23,8 +23,13 @@ local function loadEditorConfig(path)
 	return config
 end
 
+<<<<<<< HEAD
+local function setBufferProperties(config, path, filename)
+	if path == nil then return end
+=======
 local function setBufferProperties(config, filename)
 	if filename == nil then return end
+>>>>>>> 146286cca36c336dc9b26761e31627d36c0a6763
 	for sectionName, section in pairs(config) do
 		if #sectionName == 0 then goto continue end
 		local pattern = string.gsub(sectionName, "%*?%*?%??", patternSubs)
@@ -69,17 +74,31 @@ events.connect(events.FILE_OPENED, function(filename)
 	if filename == nil then return end
 	local path = filename
 	local configs = {}
+<<<<<<< HEAD
+	local initialPath, current = string.match(path, "^(.+/)(.+)")
+	path = initialPath
+	while true do
+		if path == nil then break end
+=======
     while true do
         path, current = string.match(path, "^(.+[/\\])(.+)")
         if path == nil then break end
+>>>>>>> 146286cca36c336dc9b26761e31627d36c0a6763
 		local possiblePath = path .. ".editorconfig"
-        local attributes = lfs.attributes(possiblePath)
+		local attributes = lfs.attributes(possiblePath)
 		if attributes ~= nil then
 			configs[#configs + 1] = loadEditorConfig(possiblePath)
 			if configs[#configs][""]["root"] then break end
 		end
+<<<<<<< HEAD
+		path, current = string.match(path, "^(.+/)(.+)")
+	end
+	for i = #configs, 1, -1 do
+		setBufferProperties(configs[i], initialPath, filename)
+=======
     end
 	for i = 1, #configs do
 		setBufferProperties(configs[#configs - i + 1], filename)
+>>>>>>> 146286cca36c336dc9b26761e31627d36c0a6763
 	end
 end)
