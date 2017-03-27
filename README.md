@@ -1,6 +1,10 @@
 # editorconfig-textadept
 [EditorConfig](http://editorconfig.org/) plugin for [Textadept](http://foicica.com/textadept/).
 
+# THIS PROJECT IS NO LONGER MAINTAINED
+
+Use https://github.com/editorconfig/editorconfig-textadept instead.
+
 ### Installation
 * Clone this repository.
 * Copy or symlink the editorconfig.lua file into your ".textadept" folder.
